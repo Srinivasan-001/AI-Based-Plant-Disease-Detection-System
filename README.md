@@ -4,12 +4,6 @@ An AI-powered Flask web application that detects plant leaf diseases from images
 
 ---
 
-## 🚀 Live Demo
-🔗 https://your-deployment-link.com  
-*(Add after deployment – Render / Railway / PythonAnywhere)*
-
----
-
 ## 📌 Features
 
 - 📷 Upload leaf image for disease prediction
