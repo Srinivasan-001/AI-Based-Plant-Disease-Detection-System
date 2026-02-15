@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Agri Doctor</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="header">
+    🌿 AI Agri Doctor — Smart Plant Disease Diagnosis
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Upload Leaf Image</h2>
+        <input type="file" id="file" accept="image/*">
+        <button onclick="uploadImage()">Analyze Leaf</button>
+
+        <h3>Uploaded Leaf:</h3>
+        <img id="preview">
+    </div>
+
+    <div class="card result-box">
+        <h2>🩺 Diagnosis Report</h2>
+
+        <p><strong>Disease:</strong> <span id="disease">—</span></p>
+        <p><strong>Confidence:</strong> <span id="confidence">—</span></p>
+
+        <h3>🌾 Recommended Solution</h3>
+
+        <div class="box">
+            <ul id="solution"></ul>
+        </div>
+    </div>
+</div>
+
+<script>
+async function uploadImage() {
+    let fileInput = document.getElementById("file");
+
+    if (!fileInput.files[0]) {
+        alert("Please select an image first!");
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    let response = await fetch("/predict", {
+        method: "POST",
+        body: formData
+    });
+
+    let data = await response.json();
+
+    document.getElementById("preview").src = data.image;
+    document.getElementById("disease").innerText = data.disease;
+    document.getElementById("confidence").innerText = data.confidence + "%";
+
+    fillList("solution", data.treatment);
+}
+
+function fillList(id, items) {
+    let ul = document.getElementById(id);
+    ul.innerHTML = "";
+
+    items.forEach(item => {
+        let li = document.createElement("li");
+        li.innerText = item;
+        ul.appendChild(li);
+    });
+}
+</script>
+
+</body>
+</html>
